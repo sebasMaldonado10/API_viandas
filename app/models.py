@@ -8,8 +8,8 @@ class User(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
-    password_hash = db.Column(db.String(128), nullable=False)
-    rol = db.Column(db.Enum("client", "admin"), nullable=False, default="client")
+    password_hash = db.Column(db.String(255), nullable=False)
+    role = db.Column(db.Enum("client", "admin"), nullable=False, default="client")
     phone = db.Column(db.String(20), nullable=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
