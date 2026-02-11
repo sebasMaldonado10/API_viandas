@@ -66,7 +66,7 @@ class Order(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"), nullable=False)
     menu_day_id = db.Column(db.Integer, db.ForeignKey("menu_days.id"), nullable=False)
     total_price = db.Column(db.Float, nullable=False)
-    status = db.Column(db.Enum("CREADO", "EN_PREPARACION", "LISTO", "ENTREGADO"), default="CREADO", nullable=False)
+    status = db.Column(db.Enum("CREADO", "EN_PREPARACION", "LISTO", "ENTREGADO", "CANCELADO"), default="CREADO", nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
 
     # Relacion con User
@@ -75,6 +75,11 @@ class Order(db.Model):
     menu_day = db.relationship("MenuDay", back_populates="orders")
     # Relacion con OrderItem
     items = db.relationship("OrderItem", backref="order", cascade="all, delete-orphan")
+
+    def calculate_total_price(self):
+        """Calcula y actualiza el total de la orden sumando todos los items"""
+        self.total_price = sum(item.price for item in self.items)
+        return self.total_price
 
 # Tabla order items que relaciona productos con las ordenes realizadas
 class OrderItem(db.Model): 
