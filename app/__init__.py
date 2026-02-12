@@ -23,7 +23,7 @@ def create_app():
     #importar modelos para que SQLAlchemy los reconozca
     from . import models
     
-    from .routes import api_bp
-    app.register_blueprint(api_bp) # Register the API blueprint
+    from .routes import register_routes
+    register_routes(app)
     
     return app
